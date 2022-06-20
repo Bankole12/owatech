@@ -14,6 +14,7 @@ class _HomePageState extends State<HomePage> implements MemeListViewContract{
   late List<HomeCardModel> _memes;
 
   late bool _show = false;
+  bool _loading = true;
 
   Widget _bottomSheetItem({
     required String title,
@@ -133,209 +134,139 @@ class _HomePageState extends State<HomePage> implements MemeListViewContract{
     }
   }
 
+  Widget _textItem({
+    required String text
+}){
+    return Text(
+      text,
+      style: const TextStyle(
+        fontSize: 14,
+        color: Colors.white
+      ),
+    );
+  }
+
+  Widget _iconItem({
+    required IconData icon,
+    double? itemSize
+  }){
+    return Icon(
+      icon,
+      size: itemSize??20,
+      color: Colors.white,
+    );
+  }
+
+  Widget _statItem({
+    required String title,
+    required IconData icon
+}){
+    return Container(
+      margin: const EdgeInsets.only(right: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          _iconItem(icon: icon),
+          Padding(
+            padding: const EdgeInsets.only(left: 5),
+            child: _textItem(text: title),
+          )
+        ],
+      ),
+    );
+  }
+
   Widget _getMemeItem(HomeCardModel carItem){
     return Container(
         width: 360,
         height: 282,
         margin: const EdgeInsets.all(10),
-        child: Stack(
-            children: <Widget>[
-              Positioned(
-                  top: 0,
-                  left: 0,
-                  child: Container(
-                    width: 360,
-                    height: 282,
-                    decoration: BoxDecoration(
-                      borderRadius : const BorderRadius.only(
-                        topLeft: Radius.circular(15),
-                        topRight: Radius.circular(15),
-                        bottomLeft: Radius.circular(15),
-                        bottomRight: Radius.circular(15),
+        decoration: BoxDecoration(
+            borderRadius : const BorderRadius.only(
+              topLeft: Radius.circular(15),
+              topRight: Radius.circular(15),
+              bottomLeft: Radius.circular(15),
+              bottomRight: Radius.circular(15),
+            ),
+            image : DecorationImage(
+                image: AssetImage(carItem.imagePath),
+                fit: BoxFit.cover
+            ),
+          ),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius : const BorderRadius.only(
+              bottomLeft: Radius.circular(15),
+              bottomRight: Radius.circular(15),
+            ),
+            gradient: LinearGradient(
+              end: const Alignment(0.0, -1),
+              begin: const Alignment(0.0, 0.7),
+              colors: <Color>[
+                const Color(0x8A000000),
+                Colors.black12.withOpacity(0.0)
+              ],
+            ),
+          ),
+          child: Column(
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                          color: Colors.redAccent,
+                          borderRadius: BorderRadius.circular(50)
                       ),
-                      image : DecorationImage(
-                          image: AssetImage(carItem.imagePath),
-                          fit: BoxFit.cover
+                      child: Row(
+                        children: [
+                          _iconItem(
+                              icon: Icons.favorite_border_outlined,
+                              itemSize: 18
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 3),
+                            child: _textItem(text: 'Loved'),
+                          )
+                        ],
                       ),
                     ),
-                  )
-              ),
-              Positioned(
-                  top: 184,
-                  left: 18,
-                  child: SizedBox(
-                    width: 320,
-                    child: Text(
-                      carItem.description,
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                          color: Color.fromRGBO(255, 255, 255, 1),
-                          fontSize: 14,
-                          letterSpacing: 0 /*percentages not used in flutter. defaulting to zero*/,
-                          fontWeight: FontWeight.normal,
-                          height: 1
-                      ),),
-                  )
-              ),
-              Positioned(
-                  top: 236,
-                  left: 102,
-                  child: SizedBox(
-                      width: 24,
-                      height: 24,
-                      child: Stack(
-                          children: const <Widget>[
-                            Positioned(
-                                top: 2.999971628189087,
-                                left: 3,
-                                child: Icon(
-                                  Icons.mode_comment_outlined,
-                                  color: Colors.white,
-                                )
-                            ),
-                          ]
-                      )
-                  )
-              ),
-              Positioned(
-                  top: 236,
-                  left: 18,
-                  child: SizedBox(
-                      width: 24,
-                      height: 24,
-                      // decoration: BoxDecoration(
-                      //   color : Color.fromRGBO(255, 255, 255, 1),
-                      // ),
-                      child: Stack(
-                          children: const <Widget>[
-                            Positioned(
-                              top: 2.9981744289398193,
-                              left: 1.5487092733383179,
-                              child: Icon(
-                                Icons.favorite_border_outlined,
-                                color: Colors.white,
-                              ),
-                              // child: SvgPicture.asset(
-                              //     'assets/images/vector.svg',
-                              //     semanticsLabel: 'vector'
-                              // );
-                            ),
-                          ]
-                      )
-                  )
-              ),
-              Positioned(
-                  top: 236,
-                  left: 186,
-                  child: SizedBox(
-                      width: 24,
-                      height: 24,
-                      // decoration: BoxDecoration(
-                      //   color : Color.fromRGBO(255, 255, 255, 1),
-                      // ),
-                      child: Stack(
-                          children: const <Widget>[
-                            Positioned(
-                                top: 2.999971628189087,
-                                left: 3,
-                                child: Icon(
-                                  Icons.system_security_update_rounded,
-                                  color: Colors.white,
-                                )
-                            )
-                          ]
-                      )
-                  )
-              ),
-               Positioned(
-                  top: 240,
-                  left: 47,
-                  child: Text('${carItem.like}k', textAlign: TextAlign.left, style: const TextStyle(
-                      color: Color.fromRGBO(255, 255, 255, 1),
-                      fontFamily: 'Lato',
-                      fontSize: 14,
-                      letterSpacing: 0 /*percentages not used in flutter. defaulting to zero*/,
-                      fontWeight: FontWeight.normal,
-                      height: 1
-                  ),)
-              ),
-               Positioned(
-                  top: 240,
-                  left: 131,
-                  child: Text('${carItem.comment}k', textAlign: TextAlign.left, style: const TextStyle(
-                      color: Color.fromRGBO(255, 255, 255, 1),
-                      fontFamily: 'Lato',
-                      fontSize: 14,
-                      letterSpacing: 0 /*percentages not used in flutter. defaulting to zero*/,
-                      fontWeight: FontWeight.normal,
-                      height: 1
-                  ),)
-              ),
-               Positioned(
-                  top: 240,
-                  left: 215,
-                  child: Text('${carItem.share}k', textAlign: TextAlign.left, style: const TextStyle(
-                      color: Color.fromRGBO(255, 255, 255, 1),
-                      fontFamily: 'Lato',
-                      fontSize: 14,
-                      letterSpacing: 0 /*percentages not used in flutter. defaulting to zero*/,
-                      fontWeight: FontWeight.normal,
-                      height: 1
-                  ),)
-              ),
-              Positioned(
-                top: 10,
-                left: 280,
-                child:Container(
-                  width: 70,
-                  height: 30,
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(50)
+                  ],
+                ),
+                Expanded(child: Container()),
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: _textItem(text: carItem.description)
+                ),
+                Container(
+                  height: 50,
+                  padding: const EdgeInsets.only(
+                      top: 10.0,
+                      right: 10,
+                      bottom: 20,
+                      left: 10
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: const [
-                      Icon(
-                        Icons.favorite_border_outlined,
-                        color: Colors.white,
-                        size: 15,
+                    children: [
+                      _statItem(
+                        title: carItem.like,
+                        icon: Icons.favorite_border_outlined
                       ),
-                      Text(
-                          'Loved',
-                          style:TextStyle(
-                              fontSize: 12,
-                              color: Colors.white
-                          )
-                      )
+                      _statItem(
+                          title: carItem.comment,
+                          icon: Icons.mode_comment_outlined
+                      ),
+                      _statItem(
+                          title: carItem.share,
+                          icon: Icons.ios_share
+                      ),
                     ],
                   ),
                 ),
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  height: 50,
-                  width: 360,
-                  decoration: BoxDecoration(
-                      borderRadius : const BorderRadius.only(
-                        bottomLeft: Radius.circular(15),
-                        bottomRight: Radius.circular(15),
-                      ),
-                    gradient: LinearGradient(
-                      end: const Alignment(0.0, -1),
-                      begin: const Alignment(0.0, 0.1),
-                      colors: <Color>[
-                        const Color(0x8A000000),
-                        Colors.black12.withOpacity(0.0)
-                      ],
-                    ),
-
-                  ),
-                ),
-              ),
-            ]
+              ]
+          ),
         )
     );
   }
@@ -415,7 +346,7 @@ class _HomePageState extends State<HomePage> implements MemeListViewContract{
             )
           ],
         ),
-        body: Center(child: _memeWidget()),
+        body: Center(child: _loading? const CircularProgressIndicator() : _memeWidget()),
         bottomSheet: _showBottomSheet()// This trailing comma makes auto-formatting nicer for build methods.
     );
   }
@@ -424,6 +355,7 @@ class _HomePageState extends State<HomePage> implements MemeListViewContract{
   void onLoadMemeComplete(List<HomeCardModel> items) {
     setState(() {
       _memes = items;
+      _loading = false;
     });
   }
 

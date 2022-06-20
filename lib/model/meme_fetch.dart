@@ -8,7 +8,13 @@ class FetchActualData implements MemeReposiry{
   String dataurl = 'yoururl';
   @override
   Future<List<HomeCardModel>> fetchMemes() async{
-    http.Response response = await http.get(Uri.parse(dataurl));
+    http.Response response;
+    try {
+      response = await http.get(Uri.parse(dataurl));
+    }catch(e){
+      throw FetchDataException("Url not valid");
+    }
+
     final List responseBody = jsonDecode(response.body);
     final statusCode = response.statusCode;
     if(statusCode != 200 || responseBody == null){

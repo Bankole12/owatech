@@ -10,23 +10,23 @@ class MockMemeData implements MemeReposiry{
 var data = <HomeCardModel>[
   HomeCardModel(
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tellus arcu enim urna et. Tellus cursus volutpat.',
-    like: '52',
-    comment: '17',
-    share: '3',
+    like: '52K',
+    comment: '17K',
+    share: '3K',
     imagePath: 'assets/images/Rectangle45.png'
   ),
   HomeCardModel(
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tellus arcu enim urna et. Tellus cursus volutpat.',
-      like: '52',
-      comment: '17',
-      share: '3',
+      like: '52K',
+      comment: '17K',
+      share: '3K',
       imagePath: 'assets/images/Donald.png'
   ),
   HomeCardModel(
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tellus arcu enim urna et. Tellus cursus volutpat.',
-      like: '52',
-      comment: '17',
-      share: '3',
+      like: '52K',
+      comment: '17K',
+      share: '3K',
       imagePath: 'assets/images/Lady.png'
   ),
 ];
